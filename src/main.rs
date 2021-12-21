@@ -11,6 +11,11 @@ use rocket::{
 #[macro_use]
 extern crate rocket;
 
+#[get("/world")]
+fn hello() -> &'static str {
+    "Hello, world!"
+}
+
 #[post("/api/shorten?<url>")]
 fn shorten(url: String, state: &State<DashMap<u32, String>>) -> Result<String, BadRequest<&str>> {
     if url.is_empty() {
@@ -37,6 +42,7 @@ fn rocket() -> _ {
     rocket::build()
         .manage(DashMap::<u32, String>::new())
         .mount("/", routes![shorten, redirect])
+        .mount("/hello", routes![hello])
 }
 
 #[cfg(test)]
