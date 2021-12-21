@@ -1,3 +1,5 @@
+use dashmap::DashMap;
+
 #[macro_use]
 extern crate rocket;
 
@@ -8,5 +10,9 @@ fn index() -> &'static str {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![index])
+    // dashmap is a fast, concurrent hashmap that implements Sync
+    // we only need to access it from endpoints, so we let rocket manage it directly
+    rocket::build()
+        .manage(DashMap::<u32, String>::new())
+        .mount("/", routes![index])
 }
