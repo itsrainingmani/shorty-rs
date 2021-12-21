@@ -1,12 +1,15 @@
 name: Test
 on:
+  # trigger workflow on push
+  # but only for main branch
   push:
-    branches: [main]
-env:
-  CARGO_TERM_COLOR: always
+    branches:
+      - main
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
     steps:
       - uses: actions/checkout@v2
       - name: Build
